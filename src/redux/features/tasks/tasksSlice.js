@@ -7,12 +7,43 @@ const initialState = {
       status: "pending",
       title: "Remove Button",
       description:
-        "We need a remove button in our task card. Meke the button red and use Heroicon for tashbin icon.",
+        "We need a remove button in our task card. Mke the button red and use Heroicon for tashbin icon.",
       date: "2023-08-28",
-      assignedTo: "Mir Hussain",
+      assignedTo: "Mohammad Apon",
       priority: "high",
     },
+    {
+      id: 2,
+      status: "pending",
+      title: "Remove Button",
+      description:
+        "We need a remove button in our task card. Mke the button red and use Heroicon for tashbin icon.",
+      date: "2023-08-28",
+      assignedTo: "Mohammad Papon",
+      priority: "high",
+    },
+    {
+      id: 3,
+      status: "pending",
+      title: "Remove Button",
+      description:
+        "We need a remove button in our task card. Mke the button red and use Heroicon for tashbin icon.",
+      date: "2023-08-28",
+      assignedTo: "Mohammad Apon",
+      priority: "low",
+    },
+    {
+      id: 4,
+      status: "pending",
+      title: "Remove Button",
+      description:
+        "We need a remove button in our task card. Mke the button red and use Heroicon for tashbin icon.",
+      date: "2023-08-28",
+      assignedTo: "Mohammad Apon",
+      priority: "medium",
+    },
   ],
+  userSpecificTasks: [],
 };
 
 const tasksSlice = createSlice({
@@ -38,8 +69,14 @@ const tasksSlice = createSlice({
       const target = state.tasks.find((task) => task.id === payload.id);
       target.status = payload.status;
     },
+    setUserTasks: (state, { payload }) => {
+      state.userSpecificTasks = state.tasks.filter(
+        (item) => item.assignedTo === payload
+      );
+    },
   },
 });
 
-export const { addTask, removeTask, updateStatus } = tasksSlice.actions;
+export const { addTask, removeTask, updateStatus, setUserTasks } =
+  tasksSlice.actions;
 export default tasksSlice.reducer;

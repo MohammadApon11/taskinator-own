@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "mohammad apon",
+  name: "Mohammad Apon",
   email: "apon@gmail.com",
-  userTasks: [],
 };
 
 const userSlice = createSlice({
@@ -11,7 +10,5 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
 });
-
-
 
 export default userSlice.reducer;

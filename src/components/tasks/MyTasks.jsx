@@ -2,32 +2,60 @@ import {
   CheckIcon,
   DocumentMagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setUserTasks,
+  updateStatus,
+} from "../../redux/features/tasks/tasksSlice";
+import DetailsTaskModal from "./DetailsTaskModal";
 
 const MyTasks = () => {
-  const { tasks } = useSelector((state) => state.tasksSlice);
+  const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);
+  const { name: userName } = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const [openTaskId, setOpenTaskId] = useState(0);
+  const handleModal = (id) => {
+    setIsOpen(!isOpen);
+    setOpenTaskId(id);
+  };
 
-  const { user } = useSelector((state) => state.userSlice);
-
-  console.log(user);
-
-  const myTasks = tasks.filter(task => task.assignedTo === user);
+  useEffect(() => {
+    dispatch(setUserTasks(userName));
+  }, [tasks, dispatch, userName]);
 
   return (
     <div>
+      <DetailsTaskModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        id={openTaskId}
+        title={"Details Task"}
+      />
       <h1 className="text-xl my-3">My Tasks</h1>
       <div className=" h-[750px] overflow-auto space-y-3">
-        {myTasks?.map((item) => (
+        {userSpecificTasks?.map((item) => (
           <div
             key={item.id}
             className="bg-secondary/10 rounded-md p-3 flex justify-between"
           >
             <h1>{item.title}</h1>
             <div className="flex gap-3">
-              <button className="grid place-content-center" title="Details">
+              <button
+                onClick={() => handleModal(item.id)}
+                className="grid place-content-center"
+                title="Details"
+              >
                 <DocumentMagnifyingGlassIcon className="w-5 h-5 text-primary" />
               </button>
-              <button className="grid place-content-center" title="Done">
+              <button
+                onClick={() =>
+                  dispatch(updateStatus({ id: item.id, status: "done" }))
+                }
+                className="grid place-content-center"
+                title="Done"
+              >
                 <CheckIcon className="w-5 h-5 text-primary" />
               </button>
             </div>
